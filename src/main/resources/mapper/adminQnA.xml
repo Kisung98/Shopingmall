@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="AdminMybatis.aa">
+
+    <select id="qnaList" resultType="java.util.Map">
+		SELECT * FROM qna LEFT OUTER JOIN qna_reply ON qna.qna_num = qna_reply.reply_num order by qna_num desc
+	</select>
+	
+
+	<select id="qnaDetail" resultType="java.util.Map" parameterType="Integer">
+	 SELECT * FROM qna LEFT OUTER JOIN qna_reply ON qna.qna_num = qna_reply.reply_num where qna_num = #{qna_num} order by qna_num
+	</select>
+	
+	<insert id="qnaReply"   parameterType="java.util.Map">
+        insert into qna_reply values(#{qna_num},#{reply_content},TO_CHAR(SYSDATE,'YYYY-MM-DD'))	
+	</insert>
+
+</mapper>

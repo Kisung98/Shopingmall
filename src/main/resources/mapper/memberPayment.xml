@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="AdminMybatis.aa">
+
+	<insert id="payInsert" parameterType="java.util.Map">
+		INSERT INTO pay
+		SELECT o.order_num, o.order_member, #{pay_method}, o.order_product_count * p.product_price,
+		o.order_date
+		FROM ORDERS o
+		JOIN product p ON o.order_product = p.product_num
+		WHERE o.order_member = #{member_num}
+		AND
+		o.order_num NOT IN (SELECT DISTINCT pay_num FROM pay)
+	</insert>
+
+	<insert id="insertOrders" parameterType="Integer">
+		INSERT INTO
+		orders(order_num, order_date, order_member, order_product, order_product_count, order_product_color, order_pay)
+		SELECT orders_num_seq.nextval,
+		TO_CHAR(SYSDATE,'YYYY-MM-DD'),
+		cart_member_num,
+		cart_product,
+		cart_count,
+		cart_color, 
+		orders_num_seq.nextval
+		FROM cart c 
+		where cart_member_num=#{member_num}
+	</insert>
+
+	<delete id="cartDeleteAll" parameterType="Integer">
+
+		delete from cart where
+		cart_member_num = #{member_num}
+
+
+	</delete>
+
+
+
+
+</mapper>
+

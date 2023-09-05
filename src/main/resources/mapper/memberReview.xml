@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mybatis.mapper.qnaMapper">
+	<update id="reviewUpdate" parameterType="map">
+		UPDATE review
+		SET
+			review_grade = #{review_grade},
+			review_content = #{review_content},
+		WHERE 
+			review_num = #{review_num}
+	</update>
+	<delete id="reviewDelete" parameterType="map">
+		delete from review where review_num=#{review_num}
+	</delete>
+	
+	<select id="reviewList" parameterType="java.util.HashMap" resultType="map">
+		SELECT
+		        review_num, review_grade, review_writer, review_content
+		  FROM review
+		<where>
+			<if test="review_num!=null">AND review_num=#{review_num}</if>		
+			<if test="gubun!=null">
+				<choose>
+					<when test='gubun.equals("별점")'>
+						AND (review_grade LIKE '%'||#{keyword}||'%')
+					</when> 
+                    <when test='gubun.equals("작성자")'>
+						AND (review_writer LIKE '%'||#{keyword}||'%')
+					</when>
+					<when test='gubun.equals("내용")'>
+						AND (review_content LIKE '%'||#{keyword}||'%')
+					</when>
+				</choose>
+			</if>			
+		</where>
+		ORDER BY review_num desc
+	</select>	 	
+
+	<insert id="reviewInsert" parameterType="map" >
+		INSERT INTO review(review_num, review_grade, review_writer, review_content, review_order_num) 
+		              VALUES(seq_review_no.nextval
+		                           ,#{review_grade},#{review_writer},#{review_content},#{review_order_num})
+	</insert>
+	
+</mapper>

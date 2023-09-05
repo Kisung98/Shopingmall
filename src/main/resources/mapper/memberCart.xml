@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.memberCart">
+
+	<insert id="cartInsert" parameterType="java.util.Map">
+		insert into cart values (cart_num_seq.nextval,#{cart_member_num},#{cart_product},#{cart_count},#{cart_color})
+	</insert>
+
+
+	<select id="cartList" parameterType="Integer"
+		resultType="java.util.Map">
+		SELECT * FROM cart c JOIN member m ON c.cart_member_num = m.member_num JOIN  product p ON c.cart_product = p.product_num where member_num=#{member_num}
+	</select>
+	
+	<delete id="cartDelete" parameterType="java.util.Map">
+	delete from cart where cart_num=#{cart_num}
+	</delete>
+
+
+
+</mapper>

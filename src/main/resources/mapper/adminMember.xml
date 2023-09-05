@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="AdminMybatis.aa">
+
+    <select id="memberList" resultType="com.example.demo.vo.MemberVo">
+		select * from member order by member_num 
+	</select>
+
+	<select id="memberSearch" resultType="com.example.demo.vo.MemberVo" parameterType="java.lang.String">
+	select * from member where member_name LIKE '%'||#{member_name}||'%' order by member_num
+	</select>
+
+</mapper>
